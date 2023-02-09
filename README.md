@@ -5,8 +5,7 @@ A CTFd plugin that allows competitors to upload scripts. The scripts are queued 
 ![](./img/solve.gif)
 
 ## Simple Configuration
-If you would like a very simple deployment, and the fastest way to get up and running, you can set some simple enviroment varibles and have
-a basic script configuration ready to go.
+If you would like a very simple deployment, and the fastest way to get up and running, you can set some simple enviroment varibles and have a basic script configuration ready to go.
 
 | **Environment Variable** | **Default Value** | **Description** |
 |--------------------------|-------------------|-----------------|
@@ -22,9 +21,11 @@ For more advanced deployment types, you will want to modify [./ctfd_script_chall
 
 ## Consumer
 
-The consumer takes the scripts, and basic information about the challenge and user who sumbitted, and returns teh results back to CTFd.
+An example consumer has been provide for testing.
+Note, The consumer within this repo is a **test Python script** for testing the CTFd-to-RabbitMQ integration.
+For the actual consumer deployed, see [gg-consumer](https://github.com/ghidragolf/gg-consumer)
 
-An example consumer has been provided. 
+This consumer takes the script from RabbitMQ, and basic information about the challenge and user who sumbitted, and returns the results back to CTFd.
 
 >Note: The example consumer does _NOT_ execute scripts and simply returns "hello world"
 
@@ -32,22 +33,22 @@ An example consumer has been provided.
 
 Run the CTFd stack with docker compose
 ```
-docker-compose build
-docker-compose up -d
+$> docker-compose build
+$> docker-compose up -d
 ```
 
 ### Creating Challenges
 
-1. To create new script challenges in CTFd, select the "script" type and create your challenge as normal
+1. To create new script challenges in CTFd, select the "script" type and create your challenge as normal.
 
 
 ![](./img/challenge.png)
 
-2. Create a new `multi` flag. Each line in this flag must be contained in the script results returned from the server
+2. Create a new `multi` flag. Each line in this flag must be contained in the script results returned from the server.
 
 
 ![](./img/flag.png)
 
 
 ### Disclaimer
-Executing untrusted user scripts can be dangerous. Make sure you validate the uploaded submissions and implement safeguards to prevent attacks. Always run execute the uploaded scripts on a different system than the CTFd server to ensure the integrity of the competition.
+Executing untrusted user scripts can be dangerous. Make sure you validate the uploaded submissions and implement safeguards to prevent attacks. Always run execute the uploaded scripts on a different system than the CTFd server to ensure the integrity of the competition. see the [gg-consumer repo](https://github.com/ghidragolf/gg-consumer/tree/dev#defensive-measures-for-ghidra-golf-consumer) for strategies on defensive deployments.
