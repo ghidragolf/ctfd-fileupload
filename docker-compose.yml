@@ -53,7 +53,8 @@ services:
       - RABBITMQ_DEFAULT_PASS=pass
   
   consumer:
-    build: consumer
+    build: 
+      context: ./consumer
     environment:
       - PYTHONUNBUFFERED=1
       - RABBITMQ_URL=amqp://user:pass@rabbit:5672
