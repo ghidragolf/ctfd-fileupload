@@ -21,11 +21,9 @@ For more advanced deployment types, you will want to modify [./ctfd_script_chall
 
 ## Consumer
 
-An example consumer has been provide for testing.
-Note, The consumer within this repo is a **test Python script** for testing the CTFd-to-RabbitMQ integration.
-For the actual consumer deployed, see [gg-consumer](https://github.com/ghidragolf/gg-consumer)
+The consumer takes the script from RabbitMQ, and basic information about the challenge and user who sumbitted, and returns the results back to CTFd.
 
-This consumer takes the script from RabbitMQ, and basic information about the challenge and user who sumbitted, and returns the results back to CTFd.
+An example consumer has been provided in this repo for testing, for the actual consumer used in GhidraGolf, see [gg-consumer](https://github.com/ghidragolf/gg-consumer)
 
 >Note: The example consumer does _NOT_ execute scripts and simply returns "hello world"
 
