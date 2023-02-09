@@ -1,0 +1,180 @@
+<div role="tabpanel" class="tab-pane config-section" id="settings">
+	<form method="POST" autocomplete="off" class="w-100">
+		<div class="form-group">
+			<label>
+				Challenge Visibility<br>
+				<small class="form-text text-muted">
+					Control whether users must be logged in to see challenges
+				</small>
+			</label>
+			<select class="form-control custom-select" name="challenge_visibility">
+				<option value="public" {% if challenge_visibility == 'public' %}selected{% endif %}>
+					Public
+				</option>
+				<option value="private" {% if challenge_visibility == 'private' %}selected{% endif %}>
+					Private
+				</option>
+				<option value="admins" {% if challenge_visibility == 'admins' %}selected{% endif %}>
+					Admins Only
+				</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label>
+				Score Visibility<br>
+				<small class="form-text text-muted">
+					Control whether solves/score are shown to the public, to logged in users, hidden to all non-admins, or only shown to admins
+				</small>
+			</label>
+			<select class="form-control custom-select" name="score_visibility">
+				<option value="public" {% if score_visibility == 'public' %}selected{% endif %}>
+					Public
+				</option>
+				<option value="private" {% if score_visibility == 'private' %}selected{% endif %}>
+					Private
+				</option>
+				<option value="hidden" {% if score_visibility == 'hidden' %}selected{% endif %}>
+					Hidden
+				</option>
+				<option value="admins" {% if score_visibility == 'admins' %}selected{% endif %}>
+					Admins Only
+				</option>
+			</select>
+			<small class="form-text text-muted">
+				This setting should generally be the same as Account Visibility to avoid conflicts.
+			</small>
+		</div>
+
+		<div class="form-group">
+			<label>
+				Account Visibility<br>
+				<small class="form-text text-muted">
+					Control whether accounts (users &amp; teams) are shown to everyone, only to authenticated users, or only to admins
+				</small>
+			</label>
+			<select class="form-control custom-select" name="account_visibility">
+				<option value="public" {% if account_visibility == 'public' %}selected{% endif %}>
+					Public
+				</option>
+				<option value="private" {% if account_visibility == 'private' %}selected{% endif %}>
+					Private
+				</option>
+				<option value="admins" {% if account_visibility == 'admins' %}selected{% endif %}>
+					Admins Only
+				</option>
+			</select>
+			<small class="form-text text-muted">
+				This setting should generally be the same as Score Visibility to avoid conflicts.
+			</small>
+		</div>
+
+		<div class="form-group">
+			<label>
+				Registration Visibility<br>
+				<small class="form-text text-muted">
+					Control whether registration is enabled for everyone or disabled
+				</small>
+			</label>
+			<select class="form-control custom-select" name="registration_visibility">
+				<option value="public" {% if registration_visibility == 'public' %}selected{% endif %}>
+					Public
+				</option>
+				<option value="private" {% if registration_visibility == 'private' %}selected{% endif %}>
+					Private
+				</option>
+				<option value="mlc" {% if registration_visibility == 'mlc' %}selected{% endif %}>
+					MajorLeagueCyber Only
+				</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<div class="form-check">
+				<label>
+					<input id="paused" name="paused" type="checkbox" {% if paused %}checked{% endif %}>
+					Pause CTF<br>
+					<small>
+						Prevent users from submitting answers until unpaused. Challenges can still be viewed.
+					</small>
+				</label>
+			</div>
+		</div>
+
+		<h4>File Upload Settings</h4>
+		<div class="form-group">
+			<label>RabbitMQ Connection URL
+				<br>
+				<small class="form-text text-muted">
+					See <a href="https://pika.readthedocs.io/en/latest/modules/parameters.html#urlparameters">pika documentation</a> for more details
+				</small>
+			</label>
+			<input class="form-control" id='script_rabbit_url' name='script_rabbit_url' type='text'
+				required pattern="amqp:\/\/([\w|%\d+]+:[\w|%\d+]+@)?([\w|%\d+]+|\[.+\])(:\d+)?(\/[\w+|%\d+]+)*" value="{{ script_rabbit_url or ''}}">
+			<div class="invalid-feedback">
+				Please provide a valid amqp url.
+			</div>
+		</div>
+		<div class="form-group">
+			<label>RabbitMQ Queue Name
+				<br>
+				<small class="form-text text-muted">
+					Queue to provide data to
+				</small>
+			</label>
+			<input class="form-control" id='script_rabbit_q' name='script_rabbit_q' type='text'
+				required pattern="\w+" value="{{ script_rabbit_q or ''}}">
+		</div>
+		<div class="form-group">
+			<label>Data template
+				<br>
+				<small class="form-text text-muted">
+					Template for data that will be submitted to the Queue
+				</small>
+			</label>
+			<textarea class="form-control" type="text" id="script_post_data" name="script_post_data" rows="10">{{ script_post_data or '' }}</textarea>
+			<div class="invalid-feedback">
+				Please provide a valid JSON template.
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Submission Timeout
+				<br>
+				<small class="form-text text-muted">
+					Seconds before submissions become invalidated
+				</small>
+			</label>
+			<input class="form-control" id='script_timeout' name='script_timeout' type='number' min=10 value="{{ script_timeout or 120}}">
+		</div>
+		<div class="form-group">
+			<label>Max File Size
+				<br>
+				<small class="form-text text-muted">
+					Maximum file size (in bytes) that contestants are allowed to upload
+				</small>
+			</label>
+			<input class="form-control" id='script_max_filesize' name='script_max_filesize' type='number' min=1000 value="{{ script_max_filesize or 10000}}">
+		</div>
+		<div class="form-group">
+			<label>Allowed File Extensions
+				<br>
+				<small class="form-text text-muted">
+					Comma or newline separated list of file extensions that users are allowed to upload. If none are specified, all extensions are allowed
+				</small>
+			</label>
+			<textarea class="form-control" type="text" id="script_allowed_extensions" name="script_allowed_extensions" rows="5">{{ script_allowed_extensions or '' }}</textarea>
+		</div>
+		<button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+	</form>
+</div>
+
+<script>
+	var postdata = document.getElementById("script_post_data")
+	postdata.oninput = (e)=>{
+		try {
+			JSON.parse(e.target.value)
+		} catch (error) {
+			postdata.setCustomValidity("must be valid JSON")
+		}
+	}
+</script>

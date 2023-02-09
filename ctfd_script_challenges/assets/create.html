@@ -1,0 +1,11 @@
+{% extends "admin/challenges/create.html" %}
+
+{% block header %}
+<div class="alert alert-secondary" role="alert">
+	Script challenges allow the user to submit files instead of flags. The files are passed off to an execution server and the output is compared in CTFd
+</div>
+{% endblock %}
+
+{% block type %}
+<input type="hidden" value="script" name="type" id="chaltype">
+{% endblock %}

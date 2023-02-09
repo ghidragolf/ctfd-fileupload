@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+  ctfd:
+    build: .
+    user: root
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - UPLOAD_FOLDER=/var/uploads
+      - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
+      - REDIS_URL=redis://cache:6379
+      - WORKERS=1
+      - LOG_FOLDER=/var/log/CTFd
+      - ACCESS_LOG=-
+      - ERROR_LOG=-
+      - REVERSE_PROXY=true
+      #- RABBITMQ_URL=amqp://user:pass@rabbit:5672
+      #- RABBITMQ_QUEUE=ctfd
+      #- ALLOWED_EXTENSIONS=".py;.java"
+    volumes:
+      - .data/CTFd/logs:/var/log/CTFd
+      - .data/CTFd/uploads:/var/uploads
+      # Make sure the plugin is mounted into CTFd plugins dir for development
+      - ./ctfd_script_challenges:/opt/CTFd/CTFd/plugins/ctfd_script_challenges
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.4.12
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=ctfd
+      - MYSQL_USER=ctfd
+      - MYSQL_PASSWORD=ctfd
+      - MYSQL_DATABASE=ctfd
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    # This command is required to set important mariadb defaults
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  cache:
+    image: redis:4
+    restart: always
+    volumes:
+    - .data/redis:/data
+
+  rabbit:
+    image: rabbitmq:3
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=pass
+  
+  consumer:
+    build: consumer
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RABBITMQ_URL=amqp://user:pass@rabbit:5672
+    volumes:
+      - ./consumer:/opt
+    depends_on:
+      - rabbit
