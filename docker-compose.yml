@@ -55,6 +55,7 @@ services:
   consumer:
     build: 
       context: ./consumer
+    restart: unless-stopped
     environment:
       - PYTHONUNBUFFERED=1
       - RABBITMQ_URL=amqp://user:pass@rabbit:5672

@@ -51,4 +51,4 @@ $> docker-compose up -d
 
 
 ### Disclaimer
-Executing untrusted user scripts can be dangerous. Make sure you validate the uploaded submissions and implement safeguards to prevent attacks. Always run execute the uploaded scripts on a different system than the CTFd server to ensure the integrity of the competition. see the [gg-consumer repo](https://github.com/ghidragolf/gg-consumer/tree/dev#defensive-measures-for-ghidra-golf-consumer) for strategies on defensive deployments.
+Executing untrusted user scripts can be dangerous. Make sure you validate the uploaded submissions and implement safeguards to prevent attacks. Always execute the uploaded scripts on a different system than the CTFd server to ensure the integrity of the competition. see the [gg-consumer repo](https://github.com/ghidragolf/gg-consumer/tree/dev#defensive-measures-for-ghidra-golf-consumer) for strategies on defensive deployments.

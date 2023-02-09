@@ -1,4 +1,4 @@
-var MAX_FILE_SIZE = 10000
+var MAX_FILE_SIZE = 1000000 // 1MB
 
 CTFd._internal.challenge.preRender = function() {}
 CTFd._internal.challenge.postRender = function() {
