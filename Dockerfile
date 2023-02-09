@@ -1,4 +1,4 @@
-FROM ctfd/ctfd:latest
+FROM ctfd/ctfd:3.5.0
 
 # Install pika as root
 COPY requirements.txt /tmp/requirements.txt
