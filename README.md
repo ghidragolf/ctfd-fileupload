@@ -1,6 +1,6 @@
 # Script Challenges Plugin
 
-A CTFd plugin that allows competitors to upload scripts. The scripts are queued through RabbitMQ to be handled be a runner.
+A CTFd plugin that allows competitors to upload scripts. The scripts are queued through RabbitMQ to be handled by a runner.
 
 ![](./img/solve.gif)
 
@@ -14,14 +14,14 @@ If you would like a very simple deployment, and the fastest way to get up and ru
 |`EXECUTION_TIMEOUT`|`120` seconds  |Timeout (in seconds) for submissions to become invalid.|
 |`ALLOWED_EXTENSIONS`|`.py;.java;.txt`|File extension list the the competitors are allowed to upload.|
 
-By modifying these settings a basic deployment will be set up that passes upload scripts to the [example consumer](./consumer/README.md).
+By modifying these settings a basic deployment will be set up that passes upload scripts to the [example consumer](./consumer).
 
 ## Advanced Configuration
-For more advanced deployment types, you will want to modify [./ctfd_script_challenges/config.py](). You can override all the settings mentioned above, as well as the `validate_file` function and the JSON data that is passed into RabbitMQ.
+For more advanced deployment types, you will want to modify [./ctfd_script_challenges/config.py](./ctfd_script_challenges/config.py). You can override all the settings mentioned above, as well as the `validate_file` function and the JSON data that is passed into RabbitMQ.
 
 ## Consumer
 
-The consumer takes the script from RabbitMQ, and basic information about the challenge and user who sumbitted, and returns the results back to CTFd.
+The consumer takes the script from RabbitMQ, basic information about the challenge and user who sumbitted, and returns the results back to CTFd.
 
 An example consumer has been provided in this repo for testing, for the actual consumer used in GhidraGolf, see [gg-consumer](https://github.com/ghidragolf/gg-consumer)
 
